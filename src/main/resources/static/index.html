@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<script type="text/javascript">
+  function handleClientLoad() {
+    // Loads the client library and the auth2 library together for efficiency.
+    // Loading the auth2 library is optional here since `gapi.client.init` function will load
+    // it if not already loaded. Loading it upfront can save one network request.
+    gapi.load('client:auth2', initClient);
+  }
+
+  function initClient() {
+    var GoogleAuth; //Google Auth object
+    // Initialize the client with API key(not required in this case) and Google+ API, and initialize OAuth with an
+    // OAuth 2.0 client ID and scopes (space delimited string) to request access.
+    gapi.client.init({
+      discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/plus/v1/rest"],
+      clientId: '205936343794-9hq33g3uqdrqkrrqq20fna0k06c2u9bp.apps.googleusercontent.com',
+      scope: 'https://www.googleapis.com/auth/plus.login'
+    }).then(function () {
+
+      // Get auth instance and listen for sign-in state changes.
+      GoogleAuth = gapi.auth2.getAuthInstance();
+      GoogleAuth.isSignedIn.listen(updateSigninStatus);
+
+      // Handle the initial sign-in state.
+      updateSigninStatus(GoogleAuth.isSignedIn.get());
+      console.log(GoogleAuth);
+    });
+  }
+
+  function updateSigninStatus(isSignedIn) {
+    // When signin status changes, this function is called.
+    // If the signin status is changed to signedIn, we make an API call.
+    if (isSignedIn) {
+      makeApiCall();
+    }
+  }
+
+  function handleSignInClick(event) {
+    // Ideally the button should only show up after gapi.client.init finishes, so that this
+    // handler won't be called before OAuth is initialized.
+    gapi.auth2.getAuthInstance().signIn();
+  }
+
+  function handleSignOutClick(event) {
+    gapi.auth2.getAuthInstance().signOut();
+  }
+
+  // Make an API call to the Google Plus API, and print the user's given name.
+  function makeApiCall() {
+    gapi.client.plus.people.get({
+      'userId': 'me'
+    }).then(function (response) {
+      console.log(response.result)
+    }, function (reason) {
+      console.log('Error: '+reason.result.error.message);
+    });
+  }
+</script>
+<script async defer src="https://apis.google.com/js/api.js" onload="handleClientLoad()"></script>
+<button id="signin-button" onclick="handleSignInClick()">Sign In</button>
+<button id="signout-button" onclick="handleSignOutClick()">Sign Out</button>
+</body>
+</html>
