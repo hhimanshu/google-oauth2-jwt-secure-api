@@ -12,17 +12,15 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
-import org.springframework.stereotype.Component;
 
-@Component
-public class TokenVerifier {
+public class GoogleTokenVerifier {
 
   private static final HttpTransport transport = new NetHttpTransport();
   private static final JsonFactory jsonFactory = new JacksonFactory();
   private static final String CLIENT_ID = "205936343794-9hq33g3uqdrqkrrqq20fna0k06c2u9bp.apps.googleusercontent.com";
 
 
-  public Payload verify(String idTokenString)
+  public static Payload verify(String idTokenString)
       throws GeneralSecurityException, IOException, InvalidTokenException {
     final GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.
         Builder(transport, jsonFactory)
@@ -32,7 +30,14 @@ public class TokenVerifier {
 
 
     System.out.println("validating:" + idTokenString);
-    GoogleIdToken idToken = verifier.verify(idTokenString);
+
+    GoogleIdToken idToken = null;
+    try {
+       idToken = verifier.verify(idTokenString);
+    } catch (IllegalArgumentException e){
+      // means token was not valid and idToken
+      // will be null
+    }
 
     if (idToken == null) {
       throw new InvalidTokenException("idToken is invalid");
