@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("rest")
-public class HelloWorld {
+public class HelloWorldService {
 
   @RequestMapping(method = RequestMethod.GET, path = "hello")
   public String sayHello() {

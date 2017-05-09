@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("rest")
-public class Tweets {
+public class TweetsService {
 
   @RequestMapping(method = RequestMethod.GET, path = "tweets")
   public String tweets() {
