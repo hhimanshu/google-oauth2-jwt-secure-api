@@ -27,14 +27,14 @@ public class RestFilterTest {
   private int port;
 
   @Test
-  public void testGetWhenNoSecurityHeaderShouldReturnUnauthorized() throws Exception {
+  public void getWhenNoSecurityHeaderShouldReturnUnauthorized() throws Exception {
     String url = "http://localhost:" + port + "/rest/hello";
     ResponseEntity<String> response = this.restTemplate.getForEntity(url, String.class);
     assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
   }
 
   @Test
-  public void testGetWhenAuthTokenAvailableInRequestShouldReturnData() throws Exception {
+  public void getWhenAuthTokenAvailableInRequestShouldReturnData() throws Exception {
     final String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJteVVuaXF1ZVVzZXIiLCJleHAiOjE0OTUxNjEwNjZ9.fT1jC_JJKlq_vCs_EyEQTKfUqZq9yTp7cqmO5EdZ3mp9uYjrkyKQfZ4PvS02Q8I69p9THIpnCPw_iE7QPO2jYA";
     String url = "http://localhost:" + port + "/rest/hello";
     final HttpHeaders headers = new HttpHeaders();

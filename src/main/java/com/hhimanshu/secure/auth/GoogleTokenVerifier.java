@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GoogleTokenVerifier {
 
   private static final HttpTransport transport = new NetHttpTransport();
@@ -20,7 +22,12 @@ public class GoogleTokenVerifier {
   private static final String CLIENT_ID = "205936343794-9hq33g3uqdrqkrrqq20fna0k06c2u9bp.apps.googleusercontent.com";
 
 
-  public static Payload verify(String idTokenString)
+  public Payload verify(String idTokenString)
+      throws GeneralSecurityException, IOException, InvalidTokenException {
+    return GoogleTokenVerifier.verifyToken(idTokenString);
+  }
+
+  private static Payload verifyToken(String idTokenString)
       throws GeneralSecurityException, IOException, InvalidTokenException {
     final GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.
         Builder(transport, jsonFactory)

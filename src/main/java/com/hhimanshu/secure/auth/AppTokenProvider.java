@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AppTokenProviderAndAuthenticator {
+public class AppTokenProvider {
 
   private static final long EXPIRATION_TIME_SECONDS = 864_000_000; // 10 days
   private static final String SECRET = "ThisIsASecret";
@@ -22,7 +22,7 @@ public class AppTokenProviderAndAuthenticator {
   public static void addAuthentication(HttpServletResponse res, String username) {
     String JWT = Jwts.builder()
         .setSubject(username)
-        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_SECONDS))
+        .setExpiration(new Date(System.nanoTime() + EXPIRATION_TIME_SECONDS))
         .signWith(SignatureAlgorithm.HS512, SECRET)
         .compact();
     res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);

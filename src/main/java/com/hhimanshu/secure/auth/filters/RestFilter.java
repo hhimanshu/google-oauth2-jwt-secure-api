@@ -1,7 +1,7 @@
 package com.hhimanshu.secure.auth.filters;
 
-import static com.hhimanshu.secure.auth.AppTokenProviderAndAuthenticator.addAuthentication;
-import static com.hhimanshu.secure.auth.AppTokenProviderAndAuthenticator.getUserFromToken;
+import static com.hhimanshu.secure.auth.AppTokenProvider.addAuthentication;
+import static com.hhimanshu.secure.auth.AppTokenProvider.getUserFromToken;
 
 import java.io.IOException;
 import java.util.Optional;

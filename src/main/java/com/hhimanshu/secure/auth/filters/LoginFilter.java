@@ -1,7 +1,7 @@
 package com.hhimanshu.secure.auth.filters;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.hhimanshu.secure.auth.AppTokenProviderAndAuthenticator;
+import com.hhimanshu.secure.auth.AppTokenProvider;
 import com.hhimanshu.secure.auth.GoogleTokenVerifier;
 import com.hhimanshu.secure.common.InvalidTokenException;
 import java.io.IOException;
@@ -14,8 +14,18 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LoginFilter implements Filter {
+
+  private GoogleTokenVerifier googleTokenVerifier;
+
+  @Autowired
+  public LoginFilter(GoogleTokenVerifier googleTokenVerifier) {
+    this.googleTokenVerifier = googleTokenVerifier;
+  }
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
@@ -31,11 +41,10 @@ public class LoginFilter implements Filter {
     if (idToken != null) {
       final Payload payload;
       try {
-        payload = GoogleTokenVerifier.verify(idToken);
+        payload = googleTokenVerifier.verify(idToken);
         if (payload != null) {
-          // TODO: 5/6/17 get this username from DB (createOrGet)
-          String username = "myUniqueUser";
-          AppTokenProviderAndAuthenticator.addAuthentication(response, username);
+          String username = payload.getSubject();
+          AppTokenProvider.addAuthentication(response, username);
           filterChain.doFilter(servletRequest, response);
           return;
         }
