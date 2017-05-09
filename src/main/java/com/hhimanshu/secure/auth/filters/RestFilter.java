@@ -21,7 +21,6 @@ public class RestFilter implements Filter {
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-    System.out.println("init /rest/* filter");
   }
 
   @Override
@@ -30,8 +29,6 @@ public class RestFilter implements Filter {
 
     HttpServletRequest request = (HttpServletRequest) servletRequest;
     HttpServletResponse response = (HttpServletResponse) servletResponse;
-
-    System.out.println("Token Filter pathInfo:" + request.getRequestURI());
 
     Optional<String> userFromToken = getUserFromToken(request);
     if (!userFromToken.isPresent()) {

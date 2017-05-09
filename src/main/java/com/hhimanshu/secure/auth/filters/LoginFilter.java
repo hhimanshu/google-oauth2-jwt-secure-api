@@ -19,7 +19,6 @@ public class LoginFilter implements Filter {
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-    System.out.println("init /login filter");
   }
 
   @Override
@@ -28,7 +27,6 @@ public class LoginFilter implements Filter {
 
     String idToken = ((HttpServletRequest) servletRequest).getHeader("X-ID-TOKEN");
     HttpServletResponse response = (HttpServletResponse) servletResponse;
-    System.out.println("filtered /login request: " + idToken);
 
     if (idToken != null) {
       final Payload payload;

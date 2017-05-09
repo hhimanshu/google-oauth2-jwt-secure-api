@@ -43,11 +43,6 @@ public class GoogleTokenVerifier {
       throw new InvalidTokenException("idToken is invalid");
     }
 
-    Payload payload = idToken.getPayload();
-
-    // fetch more attributes based on payload
-    System.out.println("payload:" + payload);
-
-    return payload;
+    return idToken.getPayload();
   }
 }

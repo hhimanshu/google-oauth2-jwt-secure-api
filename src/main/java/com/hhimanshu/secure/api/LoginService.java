@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@RequestMapping("login")
 public class LoginService {
-  @RequestMapping(method = POST, value = "/login")
+
+  @RequestMapping(method = POST)
   public void authenticate() {
   }
 }
