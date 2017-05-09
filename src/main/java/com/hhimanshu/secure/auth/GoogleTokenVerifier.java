@@ -15,7 +15,7 @@ import java.util.Collections;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TokenVerifier {
+public class GoogleTokenVerifier {
 
   private static final HttpTransport transport = new NetHttpTransport();
   private static final JsonFactory jsonFactory = new JacksonFactory();
@@ -23,6 +23,11 @@ public class TokenVerifier {
 
 
   public Payload verify(String idTokenString)
+      throws GeneralSecurityException, IOException, InvalidTokenException {
+    return GoogleTokenVerifier.verifyToken(idTokenString);
+  }
+
+  private static Payload verifyToken(String idTokenString)
       throws GeneralSecurityException, IOException, InvalidTokenException {
     final GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.
         Builder(transport, jsonFactory)
@@ -32,17 +37,19 @@ public class TokenVerifier {
 
 
     System.out.println("validating:" + idTokenString);
-    GoogleIdToken idToken = verifier.verify(idTokenString);
+
+    GoogleIdToken idToken = null;
+    try {
+       idToken = verifier.verify(idTokenString);
+    } catch (IllegalArgumentException e){
+      // means token was not valid and idToken
+      // will be null
+    }
 
     if (idToken == null) {
       throw new InvalidTokenException("idToken is invalid");
     }
 
-    Payload payload = idToken.getPayload();
-
-    // fetch more attributes based on payload
-    System.out.println("payload:" + payload);
-
-    return payload;
+    return idToken.getPayload();
   }
 }
