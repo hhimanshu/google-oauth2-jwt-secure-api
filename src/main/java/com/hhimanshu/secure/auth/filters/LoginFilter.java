@@ -6,33 +6,25 @@ import com.hhimanshu.secure.auth.GoogleTokenVerifier;
 import com.hhimanshu.secure.common.InvalidTokenException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Objects;
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.web.filter.GenericFilterBean;
 
-public class LoginFilter extends GenericFilterBean {
+public class LoginFilter implements Filter {
 
-  private final String urlPathToFilter;
-  public LoginFilter(String url) {
-    urlPathToFilter = url;
+  @Override
+  public void init(FilterConfig filterConfig) throws ServletException {
+    System.out.println("init /login filter");
   }
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
       FilterChain filterChain) throws IOException, ServletException {
-
-    HttpServletRequest request = (HttpServletRequest) servletRequest;
-
-    // do not intercept non /login requests
-    if(!Objects.equals(urlPathToFilter, request.getRequestURI())) {
-      filterChain.doFilter(servletRequest, servletResponse);
-      return;
-    }
 
     String idToken = ((HttpServletRequest) servletRequest).getHeader("X-ID-TOKEN");
     HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -54,5 +46,9 @@ public class LoginFilter extends GenericFilterBean {
       }
     }
     ((HttpServletResponse) servletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+  }
+
+  @Override
+  public void destroy() {
   }
 }

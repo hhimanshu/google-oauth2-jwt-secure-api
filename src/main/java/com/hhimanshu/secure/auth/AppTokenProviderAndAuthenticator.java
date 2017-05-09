@@ -3,6 +3,7 @@ package com.hhimanshu.secure.auth;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
@@ -27,20 +28,26 @@ public class AppTokenProviderAndAuthenticator {
     res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
   }
 
-  static Optional<String> getUserFromToken(HttpServletRequest request) {
+  public static Optional<String> getUserFromToken(HttpServletRequest request) {
     final String token = request.getHeader(HEADER_STRING);
-    if (token != null) {
-      Claims body = Jwts.parser()
-          .setSigningKey(SECRET)
-          .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-          .getBody();
-      final Instant expiration = body.getExpiration().toInstant();
-      if (expiration.isBefore(Instant.now())) {
-        return Optional.empty();
-      }
-      return Optional.of(body.getSubject());
-    }
 
+    if (token != null) {
+      try {
+        Claims body = Jwts.parser()
+            .setSigningKey(SECRET)
+            .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+            .getBody();
+        final Instant expiration = body.getExpiration().toInstant();
+
+        if (expiration.isBefore(Instant.now())) {
+          return Optional.empty();
+        }
+        return Optional.of(body.getSubject());
+
+      } catch (SignatureException e) {
+        // invalid signature
+      }
+    }
     return Optional.empty();
   }
 }

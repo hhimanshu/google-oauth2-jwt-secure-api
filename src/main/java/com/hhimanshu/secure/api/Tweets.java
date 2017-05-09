@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("rest")
-public class HelloWorld {
+public class Tweets {
 
-  @RequestMapping(method = RequestMethod.GET, path = "hello")
-  public String sayHello() {
-    return "Hello World!";
+  @RequestMapping(method = RequestMethod.GET, path = "tweets")
+  public String tweets() {
+    return "My Tweets!";
   }
 }
