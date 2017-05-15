@@ -9,11 +9,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Filters {
 
-  private LoginFilter loginFilter;
+  private final LoginFilter loginFilter;
+  private final RestFilter restFilter;
 
   @Autowired
-  public Filters(LoginFilter loginFilter) {
+  public Filters(LoginFilter loginFilter, RestFilter restFilter) {
     this.loginFilter = loginFilter;
+    this.restFilter = restFilter;
   }
 
   @Bean
@@ -27,7 +29,7 @@ public class Filters {
   @Bean
   public FilterRegistrationBean restRegistrationBean() {
     FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-    filterRegistrationBean.setFilter(new RestFilter());
+    filterRegistrationBean.setFilter(restFilter);
     filterRegistrationBean.setUrlPatterns(Collections.singletonList("/rest/*"));
     return filterRegistrationBean;
   }
