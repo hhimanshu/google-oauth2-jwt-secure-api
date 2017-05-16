@@ -2,6 +2,8 @@
 
 ### Blog link
 
+[Medium](https://medium.com/@harittweets/securing-your-apis-when-building-web-applications-5643d12e84d8)
+
 ### How to run
 clone the repository
 ```bash
