@@ -1,4 +1,4 @@
-## Securing backend APIs when developing Client side web applications
+## Securing backend APIs when developing Client side web applications [![Build Status](https://travis-ci.org/hhimanshu/google-oauth2-jwt-secure-api.svg?branch=master)](https://travis-ci.org/hhimanshu/google-oauth2-jwt-secure-api)
 
 ### Blog link
 
