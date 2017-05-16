@@ -1,4 +1,4 @@
-## Securing backend APIs when developing Client side web aplications
+## Securing backend APIs when developing Client side web applications
 
 ### Blog link
 
@@ -30,7 +30,7 @@ Authenticate with your application APIs
 curl -v -X POST -H "Content-Type: application/json" -H "X-ID-TOKEN: <place your id_token here>" -d'{}' http://localhost:8080/login
 ```
 
-If the requests suceeds, you would see token coming from your app in `Authorization` header similar to following
+If the requests succeeds, you would see token coming from your app in `Authorization` header similar to following
 ```bash
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJteVVuaXF1ZVVzZXIiLCJleHAiOjE0OTUwMDA3NjV9.B4Ax_BIkrW044rwVnN-qvLcT9r0JzP4VCECjExp3yTFqv4STNmEiG4LNBHU-BXjAOSgt9xuLV7LhVXPKLYApbQ
 ```
