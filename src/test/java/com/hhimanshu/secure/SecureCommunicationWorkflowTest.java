@@ -56,7 +56,7 @@ public class SecureCommunicationWorkflowTest {
     {
       final Payload payload = new Payload();
       // setting up random google user
-      payload.setSubject(UUID.randomUUID().toString());
+      payload.setSubject("Tony Stark");
       given(googleTokenVerifier.verify(anyString())).willReturn(payload);
 
       String url = "http://localhost:" + port + "/login";
@@ -75,7 +75,7 @@ public class SecureCommunicationWorkflowTest {
     // request protected resource using authToken
     {
       assertNotNull(authToken);
-      String url = "http://localhost:" + port + "/rest/tweets";
+      String url = "http://localhost:" + port + "/rest/tweets/2017/01";
 
       final HttpHeaders headers = new HttpHeaders();
       headers.add("Authorization", "Bearer " + authToken);
@@ -83,7 +83,7 @@ public class SecureCommunicationWorkflowTest {
           .exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class);
 
       assertEquals(HttpStatus.OK, response.getStatusCode());
-      assertEquals("My Tweets!", response.getBody());
+      assertEquals("user:Tony Stark,year: 2017,month=1", response.getBody());
 
       final HttpHeaders responseHeaders = response.getHeaders();
       assertTrue(responseHeaders.containsKey("Authorization"));

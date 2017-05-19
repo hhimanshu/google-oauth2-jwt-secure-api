@@ -31,11 +31,12 @@ public class RestFilter implements Filter {
     HttpServletResponse response = (HttpServletResponse) servletResponse;
 
     Optional<String> userFromToken = getUserFromToken(request);
+
     if (!userFromToken.isPresent()) {
       response.sendError(HttpStatus.UNAUTHORIZED.value());
       return;
     }
-
+    request.setAttribute("userId", userFromToken.get());
     addAuthentication(response, userFromToken.get());
     filterChain.doFilter(request, servletResponse);
   }

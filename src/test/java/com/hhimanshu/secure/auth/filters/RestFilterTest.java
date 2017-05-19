@@ -2,6 +2,7 @@ package com.hhimanshu.secure.auth.filters;
 
 import static org.junit.Assert.assertEquals;
 
+import com.hhimanshu.secure.auth.AppTokenProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,9 @@ public class RestFilterTest {
 
   @Test
   public void getWhenAuthTokenAvailableInRequestShouldReturnData() throws Exception {
-    final String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJteVVuaXF1ZVVzZXIiLCJleHAiOjE0OTUxNjEwNjZ9.fT1jC_JJKlq_vCs_EyEQTKfUqZq9yTp7cqmO5EdZ3mp9uYjrkyKQfZ4PvS02Q8I69p9THIpnCPw_iE7QPO2jYA";
     String url = "http://localhost:" + port + "/rest/hello";
     final HttpHeaders headers = new HttpHeaders();
-    headers.add("Authorization", "Bearer " + token);
+    headers.add("Authorization", "Bearer " + AppTokenProvider.getToken("someUser"));
     ResponseEntity<String> response = this.restTemplate
         .exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class);
 

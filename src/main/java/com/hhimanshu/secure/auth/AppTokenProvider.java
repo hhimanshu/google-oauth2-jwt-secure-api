@@ -20,12 +20,15 @@ public class AppTokenProvider {
   private static final String HEADER_STRING = "Authorization";
 
   public static void addAuthentication(HttpServletResponse res, String username) {
-    String JWT = Jwts.builder()
-        .setSubject(username)
-        .setExpiration(new Date(System.nanoTime() + EXPIRATION_TIME_SECONDS))
-        .signWith(SignatureAlgorithm.HS512, SECRET)
-        .compact();
-    res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+    res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + getToken(username));
+  }
+
+  public static String getToken(String username) {
+    return Jwts.builder()
+          .setSubject(username)
+          .setExpiration(new Date(System.nanoTime() + EXPIRATION_TIME_SECONDS))
+          .signWith(SignatureAlgorithm.HS512, SECRET)
+          .compact();
   }
 
   public static Optional<String> getUserFromToken(HttpServletRequest request) {
